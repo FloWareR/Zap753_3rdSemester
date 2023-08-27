@@ -1,0 +1,12 @@
+fieldset{
+  background-color: antiquewhite;
+}
+label{
+  font-weight: 800;
+  width:80px;
+  text-align: right;
+  display: inline-block;
+}
+legend{
+  font-size: larger;
+}
