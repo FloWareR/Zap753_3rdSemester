@@ -9,9 +9,9 @@ document.getElementById("add").addEventListener("click", function addData(){
     Name: Name,
     Age: Age,
     Address: Address,
-    Bankruptcy: Bankruptcy
-  };
-  object.adult = Age >=18;
+    Bankruptcy: Bankruptcy,
+    Adult: Age>=18,
+ } ;
   objects.push(object);
 
   const objectsDiv = document.getElementById("objectsDiv");
