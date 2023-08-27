@@ -16,7 +16,7 @@ document.getElementById("add").addEventListener("click", function addData(){
 
   const objectsDiv = document.getElementById("objectsDiv");
   const objectString = JSON.stringify(object, null, 2);
-  objectsDiv.innerHTML += "<pre>"+ objectString + "</pre>";
+  objectsDiv.innerHTML += objectString + "<br>";
   console.log(objects);
 
 });
