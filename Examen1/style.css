@@ -13,28 +13,30 @@
 nav{
   display: flex;
   flex-direction: column;
-  padding: 2%, 6%;
+  padding: 1rem, 3rem;
   justify-content: center;
   align-items: center;
+
 }
 nav img{
-  width: 1000px;
+  margin-top: 1rem;
+  width: 75rem;
 }
 
 .nav-links{
   flex: 1;
   text-align: right;
-
 }
+
 .nav-links ul li{
   list-style: none;
   display: inline-block;
-  padding: 8px 12px;
+  padding: 1rem 2rem;
   position: relative;
 }
 .nav-links ul li a{
   color: white;
   text-decoration: none;
-  font-size: 36px;
+  font-size: 3rem;
   font-family: 'Fjalla One', sans-serif;
 }
