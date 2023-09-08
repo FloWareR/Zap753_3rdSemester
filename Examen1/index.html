@@ -4,28 +4,51 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
-  <title>Overwatch 2</title>
   <link rel="icon" href="images/favicon.png" type="image/x-icon">
+  <title>Overwatch wiki</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
   <script defer src="script.js"></script>
 </head>
 <body>
-  <header>
-  <div class ="header">
-    <nav>
-      <a href="index.html"><img src="images/text.png"></a>
-      <div class="nav-links">
+  <div class="container">
+
+    <div class="navbar">
+      <a href="index.html"><img src="images/text.png" class="logo"></a>
+      <nav>
         <ul>
-          <li><a href="">PLAY</a></li>
-          <li><a href="">ABOUT</a></li>
-          <li><a href="">DOWNLOAD</a></li>
-          <li><a href="">CONTACT US</a></li>
+          <li><a href="game.html">Play Snake</a></li>
+          <li><a href="https://mail.google.com/mail/u/0/#inbox" target="_blank">Contact us</a></li>
+          <li><a href="https://download.battle.net/en-us/?product=ow&blzcmp=ow_gamesite" target="_blank">Download Overwatch </a></li>
         </ul>
+      </nav>
+      <img src="images/menuIcon.png" class="menuIcon">
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <h1>WikiWatch</h1>
+        <p>
+          Select a role to get started!
+        </p>
       </div>
-    </nav>
+      <div class="col">
+        <div class="role role1" id="tank">
+            <h5>Tank</h5>
+        </div>
+          <div class="role role2" id="dps">
+            <h5>Damage</h5>
+          </div>
+          <div class="role role3" id="support">
+            <h5>Support</h5>
+          </div>
+    </div>
+    
   </div>
-</header>
+  <footer>
+    <a href="https://www.linkedin.com/in/rafael-flores-85a5a4289/" target="_blank"><img src="images/LinkedIn_Logo.png" class="logo2"></a>
+    <a href="https://www.instagram.com/rflores.g/" target="_blank"><img src="images/Insta_Logo.png" class="logo3"></a>
+  </footer>
 </body>
 </html>

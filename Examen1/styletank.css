@@ -1,0 +1,28 @@
+*{
+  margin: 0;
+  padding: 0;
+  font-family: 'Archivo Black', sans-serif;
+  overflow: hidden; 
+}
+.container{
+  min-height: 100vh;
+  width: 100%;
+  background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(images/tankBG.jpg);
+  background-position: center;
+  background-size: cover;
+  position: relative;
+  padding-left: 8%;
+  padding-right: 8%;
+  box-sizing: border-box;
+}
+.navbar{
+  height: 12%;
+  display: flex;
+  align-items: center;
+}
+
+.menuIcon{
+  width: 1.6rem;
+  cursor: pointer;
+  margin-left:3rem;
+}
