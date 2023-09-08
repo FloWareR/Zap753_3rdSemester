@@ -15,6 +15,12 @@
   padding-right: 8%;
   box-sizing: border-box;
 }
+.col h1{
+  font-family: 'Black Ops One';
+}
+.col p{
+  font-family: 'Black Ops One';
+}
 .tank{
   background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(images/tankBG.jpg);
 }
