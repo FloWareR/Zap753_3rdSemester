@@ -1,0 +1,85 @@
+#title{
+text-align:center;
+font-size:xx-large;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#paragraph{
+background-color: greenyellow ;
+border: 2px solid black;
+outline-style: solid;
+outline-color: black;
+outline-width: thin;
+width: 50vw;
+border-radius: 10px;
+padding-left: 2vw;
+padding-top: 3vw;
+padding-right: 2vw;
+padding-bottom: 3vw;
+}
+
+.listRed ul {
+    color: black;
+    padding-left: 4vw;
+    list-style-type:disc;
+  }
+.listRed li:nth-child(even) {
+    color: red; 
+}
+.right{
+    background-color:rgb(110, 68, 200);
+    padding: 10px;
+    border: 2px solid black;
+    outline-style: solid;
+    outline-color: black;
+    outline-width: thin;
+    color: aliceblue;
+    text-align: left;
+    width: 20vw;
+    margin-left: 75vw;
+}
+.listGreen ol{
+    color:black;
+}
+.listGreen li:nth-child(3n){
+    background-color: green;
+    color: white;
+}
+.fieldset1{
+    display: flex;
+    padding: 10px;
+    width: 60%;
+    height: 30vh;
+    margin-left: 20vw;
+    justify-content: center;
+    align-items: center;
+    background-color:red;
+    border-radius: 10px;
+    border-color: black;
+    border-width: 5px;
+    border-style: dotted;
+}
+.fieldset2{
+    display: flex;
+    border-radius: 10px;
+    border-width: 5px;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    height: 80%;
+    padding: 10px;
+    border-style: dashed;
+    background-color: blue;
+}
+.fieldset3{
+    width: 80%;
+    height: 80%;
+    display: flex;
+    border-radius: 10px;    
+    border-width: 5px;
+    background-color: rgb(42, 138, 165);
+    justify-content: center;
+    align-items: center;
+    color: white;
+    border-style:groove;
+}
