@@ -1,7 +1,10 @@
+import "../style/style.css"
 
 const ContentPage = () => {
   return (
-    <h1>ContentPage</h1>
+    <div className="title">    
+      <h1>ContentPage</h1>
+    </div>
   )
 }
 

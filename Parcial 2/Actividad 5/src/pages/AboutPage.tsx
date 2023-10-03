@@ -1,8 +1,9 @@
+import "../style/style.css"
 
 
 const AboutPage = () => {
   return (
-    <div>
+    <div className="title">
       <h1>AboutPage</h1>
     </div>
   )
