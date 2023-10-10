@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"name": "Parcial 1",
+			"path": "../../Parcial 1"
+		},
+		{
+			"name": "Parcial 2",
+			"path": ".."
+		},
+		{
+			"name": "RoutingTest",
+			"path": "../../../RoutingTest"
+		},
+		{
+			"path": "../../../PersonalPortfolio"
+		}
+	],
+	"settings": {}
+}
