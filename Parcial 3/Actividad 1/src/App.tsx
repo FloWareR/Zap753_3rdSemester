@@ -1,13 +1,15 @@
 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
 
 
 function doThreeJS(){
  
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-
+  camera.position.set(70,25,0)
   //Color fondo
   scene.background = new THREE.Color(0.25,0.6,0.95);
 
@@ -21,34 +23,59 @@ function doThreeJS(){
   scene.add(light);
   
 
-
+  const loader = new GLTFLoader();
   const renderer = new THREE.WebGLRenderer();
-  //renderer.toneMapping = THREE.ACESFilmicToneMapping; //opciones aestethic
-  //renderer.outputColorSpace = THREE.SRGBColorSpace; //opciones aestethic
-  //renderer.setPixelRatio(window.devicePixelRatio); //opciones aestethic
   renderer.setSize( window.innerWidth, window.innerHeight );
+  renderer.toneMapping = THREE.ACESFilmicToneMapping; 
+  renderer.outputColorSpace = THREE.SRGBColorSpace; 
+  renderer.setPixelRatio(window.devicePixelRatio); 
 
   const controls = new OrbitControls( camera, renderer.domElement );
 
   document.body.appendChild( renderer.domElement );
 
-  const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+  const geometry = new THREE.BoxGeometry( 50, .2, 50 );
   const material = new THREE.MeshPhongMaterial( { color: 0xffffff } );  
   const cube = new THREE.Mesh( geometry, material );
   scene.add( cube );
 
   camera.position.z = 5;
-  const clock = new THREE.Clock();
+  
+  loader.load(
+    'models/spaceship.gltf',
+    function ( gltf ) {
+      scene.add( gltf.scene );
+      const model = gltf.scene;
+      model.position.set(5,5,5);
+      gltf.animations; 
+      gltf.scene; 
+      gltf.scenes; 
+      gltf.cameras;
+      gltf.asset; 
 
+
+  
+    },
+    // called while loading is progressing
+    function ( xhr ) {
+  
+      console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+  
+    },
+    // called when loading has errors
+    function ( error ) {
+  
+      console.log( error );
+  
+    }
+  );
   function animate() {
     requestAnimationFrame( animate );
-
-    cube.rotation.x += 1 * clock.getDelta();
-    cube.rotation.y += 1 * clock.getDelta();;
-
+    
     // required if controls.enableDamping or controls.autoRotate are set to true
 	  controls.update();
     renderer.render( scene, camera );
+
   }
 
 
