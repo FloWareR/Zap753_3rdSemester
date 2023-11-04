@@ -54,7 +54,9 @@ button:focus-visible {
 }
 
 
-#info {
+
+
+.info{
   color: #213547;
 	position: absolute;
 	top: 10px;
@@ -62,4 +64,28 @@ button:focus-visible {
 	text-align: center;
 	z-index: 1; /*0 tambien jalaria*/
 	display:block;
+}
+
+.maxScore{
+  color: #213547;
+	position: absolute;
+  z-index: 1; /*0 tambien jalaria*/
+  top: 10px;
+	width: 100%;
+	text-align: center;
+}
+
+.show{
+  opacity: 100;
+}
+
+.hide{
+  opacity:0;
+}
+
+.button{
+  color: #f5f5f5;
+	position: absolute;
+
+
 }

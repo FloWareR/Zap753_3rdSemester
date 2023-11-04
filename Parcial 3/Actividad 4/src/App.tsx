@@ -19,7 +19,9 @@ function doThreeJS(){
   const light = new THREE.DirectionalLight(0xffffff,0.6);
   light.position.set(0,4,2);
   scene.add(light);
+
   
+
 
 
   const renderer = new THREE.WebGLRenderer();

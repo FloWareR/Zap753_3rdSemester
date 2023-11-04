@@ -3,8 +3,11 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import * as CANNON from 'cannon';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js'
 import { texture } from 'three/examples/jsm/nodes/Nodes.js';
-import CannonDebugger from 'cannon-es-debugger'
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
+
 let score = 0
+var gameOver = false;
+
 
 function doThreeJS(){
 
@@ -15,6 +18,8 @@ function doThreeJS(){
   const world = new CANNON.World();
   const gltfloader = new GLTFLoader();
   let modelPipe: THREE.Group<THREE.Object3DEventMap>;
+  let modelCloud: THREE.Group<THREE.Object3DEventMap>;
+
 
   const tubeArrayTop: any[] = [];
   const tubeArrayBot: any[] = [];
@@ -22,11 +27,19 @@ function doThreeJS(){
   const tubePhysBot: any[] = [];
 
   const audioLoader = new THREE.AudioLoader();
+  const audioLoader2 = new THREE.AudioLoader();
+
   const audioListener = new THREE.AudioListener();
   const sound = new THREE.Audio(audioListener);
+  const sound2 = new THREE.Audio(audioListener);
+
+
 
 audioLoader.load('Sounds/flap.mp3', (buffer) => {
   sound.setBuffer(buffer);
+});
+audioLoader2.load('Sounds/die.mp3', (buffer) => {
+  sound2.setBuffer(buffer);
 });
 
   gltfloader.load(
@@ -47,8 +60,29 @@ audioLoader.load('Sounds/flap.mp3', (buffer) => {
   
     });
 
+    gltfloader.load(
+      'models/procedural_low_poly_cloud/scene.gltf',
+      function ( gltf ) {
+        scene.add( gltf.scene );
+        modelCloud =  gltf.scene;
+
+        modelCloud.position.set(16,4,5)
+      }, function ( xhr ) {
+        console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+  
+    
+      },
+      // called when loading has errors
+      function ( error ) {
+    
+        console.log( error );
+    
+      });
+
+
     var zPosition = 30;
-    var randomSize = 0;
+    let randomSize = 0;
+
     for (let i = 0; i < 15; i++) {
         
       gltfloader.load(
@@ -60,15 +94,36 @@ audioLoader.load('Sounds/flap.mp3', (buffer) => {
           scene.add(modelPipe);
           randomSize = getRandomSize();
           modelPipe.scale.set(0.08,randomSize, 0.08);
-          if(randomSize > .1){
-            randomSize -= .07
-          }
+          const boxShape = new CANNON.Box(new CANNON.Vec3(1,randomSize * 40,1)); 
+          const boxBody:any = new CANNON.Body({ 
+            shape: boxShape,
+            type:CANNON.Body.KINEMATIC
+          });
 
-          modelPipeT.scale.set(0.08,randomSize, 0.08);
-          modelPipeT.rotation.z = Math.PI;
+          if(randomSize > .14){
+            randomSize -= .04
+          }  
 
+          modelPipeT.scale.set(0.08,-randomSize, 0.08);
+          const boxShapeT = new CANNON.Box(new CANNON.Vec3(1,randomSize*40,1)); 
+
+          const boxBodyT:any = new CANNON.Body({
+            shape: boxShapeT,
+            type:CANNON.Body.KINEMATIC
+          });  
+
+          boxBody.position.set(-1, -5, zPosition); 
+          boxBodyT.position.set(-1, 10, zPosition); 
+          
+          randomSize *= 20;
           tubeArrayTop.push(modelPipe); 
           tubeArrayBot.push(modelPipeT); 
+          
+           tubePhysTop.push(boxBody); 
+           tubePhysBot.push(boxBodyT)
+           zPosition = zPosition + 15;
+           world.addBody(boxBody)
+           world.addBody(boxBodyT)
         },
         function (xhr) {
           console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
@@ -77,32 +132,18 @@ audioLoader.load('Sounds/flap.mp3', (buffer) => {
           console.log(error);
         }
       );
-      const boxShape = new CANNON.Box(new CANNON.Vec3(2,randomSize/2,2)); 
-      const boxBody:any = new CANNON.Body({
-        mass: 1, 
-        shape: boxShape,
-        type:CANNON.Body.DYNAMIC
-      });
-      const boxBodyT:any = new CANNON.Body({
-        mass: 1, 
-        shape: boxShape,
-        type:CANNON.Body.DYNAMIC
-      });
-      boxBody.position.set(0, -5, zPosition); 
-      boxBodyT.position.set(0, 10, zPosition); 
+  
 
-      tubePhysTop.push(boxBody); 
-      tubePhysBot.push(boxBodyT)
-      zPosition = zPosition + 15;
-      world.addBody(boxBody)
-      world.addBody(boxBodyT)
+
+
     }
 
 
     let spaceKeyPressed = false;
 
-
-  function getRandomSize() {
+  
+  
+    function getRandomSize() {
       const minZ = 0.05; 
       const maxZ = 0.2;
 
@@ -140,7 +181,8 @@ audioLoader.load('Sounds/flap.mp3', (buffer) => {
   renderer.setSize( window.innerWidth, window.innerHeight );
   document.body.appendChild( renderer.domElement );
   renderer.shadowMap.enabled = true
-
+  const controls = new OrbitControls( camera, renderer.domElement );
+  controls.update();
   
   const loader = new RGBELoader();
   const jpgloader = new THREE.TextureLoader();
@@ -155,7 +197,7 @@ audioLoader.load('Sounds/flap.mp3', (buffer) => {
       scene.environment = texture;
     }
   )
-  scene.add(new THREE.AxesHelper(5))  
+  
   function updateMaxScore(newScore: number) {
     const maxscore = localStorage.getItem("maxScore");
 
@@ -195,14 +237,17 @@ audioLoader.load('Sounds/flap.mp3', (buffer) => {
 
     world.gravity = new CANNON.Vec3(0,-9.81,0);
   
-  
     const planoGeometry = new THREE.PlaneGeometry(13,1100,1);
+    const planoMaterialT = new THREE.MeshPhongMaterial({
+      color:0x87CEEB,       
+      side:THREE.DoubleSide
+    });
     const planoMaterial = new THREE.MeshPhongMaterial({
       color:0x339554,       
       side:THREE.DoubleSide
     });
     const planoMesh = new THREE.Mesh(planoGeometry,planoMaterial);
-    const planoMeshT = new THREE.Mesh(planoGeometry,planoMaterial);
+    const planoMeshT = new THREE.Mesh(planoGeometry,planoMaterialT);
 
     scene.add(planoMesh);  
     scene.add(planoMeshT);  
@@ -227,11 +272,11 @@ audioLoader.load('Sounds/flap.mp3', (buffer) => {
     planoBodyT.position.set(0,10,0 )
     planoBodyT.quaternion.setFromEuler(-90 * (Math.PI/180),0,0);
 
-    const sphereShape = new CANNON.Sphere(1); 
+    const sphereShape = new CANNON.Sphere(.35); 
     const sphereBody:any = new CANNON.Body({
       mass: 1, 
       shape: sphereShape,
-      type:CANNON.Body.DYNAMIC
+      type: CANNON.Body.DYNAMIC
     });
     sphereBody.position.set(0,0,0)
 
@@ -252,27 +297,50 @@ audioLoader.load('Sounds/flap.mp3', (buffer) => {
     score ++;
   }
 
-  sphereBody.addEventListener('collide', (e) => {
-    // Handle collision with the sphere and tube here
-    console.log('Sphere collided with tube.');
+
+  sphereBody.addEventListener('collide', function(event) {
+    const otherObject = event.body; 
+    if (otherObject.id != 0 && otherObject.id != 1){
+      updateMaxScore(score);
+          gameOver = true;
+          sound2.play();
+    }
   });
 
-  
+  let divScore; //= document.getElementById('score');
+  let divDeath;//= document.getElementById('deathScreen');
+
+  setTimeout(()=>{
+    divScore = document.getElementById('score');
+    divDeath= document.getElementById('deathScreen');
+  },1000)
+
+
   function animate() {
       if(loading){  
         setTimeout(loadingFalse, 3000);
        }
-      if (!loading){
+      if (!loading ){
         world.step(physStep);
         updateCamera()
-        if(sphereBody.position.y >= 9){
-          sphereBody.velocity.y = -1;
+        if(gameOver){
+          world.remove(sphereBody)
+          scene.remove(model)
+          console.log(divDeath, divScore)
+          divScore!.classList.remove('show');
+          divDeath!.classList.add('show');
+
+          divDeath!.classList.remove('hide');
+          divScore!.classList.add('hide');
+
         }
 
-         const scoreDisplay = document.getElementById("info");
+         const scoreDisplay = document.getElementById("score");
          if (scoreDisplay) {
             scoreDisplay.textContent = `Score: ${score}`;
           }
+
+
 
       planoMesh.position.copy(planoBody.position)
       planoMesh.quaternion.copy(planoBody.quaternion)
@@ -298,11 +366,11 @@ audioLoader.load('Sounds/flap.mp3', (buffer) => {
       tubePhysBot.forEach((b, i) => {
         const mesh = tubeArrayBot[i];
         mesh.position.copy(b.position);
-        mesh.position.x = 3
+        // mesh.position.x = 3
       });   
 
       tubePhysTop.forEach((b) => {
-        b.velocity.set(0,0,-30)
+        b.velocity.set(0,0,-3)
         if(b.position.z <-10){
           reUsePipes(b);
         }
@@ -313,7 +381,9 @@ audioLoader.load('Sounds/flap.mp3', (buffer) => {
           reUsePipes(b);
         }
       });
-
+      if (!gameOver){
+        updateScore();
+      }
     }
     window.addEventListener( 'resize', onWindowResize, false );
     function onWindowResize(){ 
@@ -321,14 +391,12 @@ audioLoader.load('Sounds/flap.mp3', (buffer) => {
 
       renderer.setSize( window.innerWidth, window.innerHeight );
     }
-    updateScore();
-    // updateMaxScore(score);
   }
  
  animate(); 
 
 
- 
+
 
 }
 
@@ -341,8 +409,14 @@ const App = () => {
 
   return (
     <>
+      
       {doThreeJS()}
-      <div id="info">Score: {score}</div> 
+      <div className="info" id = "score">Score: {score}</div> 
+      <div className= 'maxScore hide' id = 'deathScreen'>Max Score:{localStorage.getItem("maxScore")} 
+      <button className = 'button' onClick={function restart(){
+  window.location.reload();
+}
+}> Play Again</button></div>
 
     </>
   )
